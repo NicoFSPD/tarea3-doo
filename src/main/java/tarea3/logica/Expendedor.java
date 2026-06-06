@@ -161,5 +161,10 @@ public Deposito<Producto> getDepositoSprite() { return this.sprite; }
 public Deposito<Producto> getDepositoFanta() { return this.fanta; }
 public Deposito<Producto> getDepositoSnickers() { return this.snickers; }
 public Deposito<Producto> getDepositoSuper8() { return this.super8; }
-public Producto peekProductoRetiro() { return this.productoEnDepositoRetiro; }
+public int getCantidadMonedasAlmacenadas() {
+        return this.monedasAlmacenadas.getCantidad();
+}
+public Moneda getMonedaAlmacenadaPorIndice(int i) {
+        return this.monedasAlmacenadas.getElementoPorIndice(i);
+}
 }
