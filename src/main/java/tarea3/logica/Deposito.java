@@ -1,4 +1,4 @@
-package org.example;
+package tarea3.logica;
 import java.util.ArrayList;
 /**
  * Clase generica que representa un deposito para almacenar elementos de tipo T
