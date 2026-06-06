@@ -13,7 +13,7 @@ import tarea3.logica.Producto;
  * @author Daniel Lopez
  * @author Eduardo Riveros
  * @author Nicolas Silva
- * @version 1.1, 6 de junio de 2026
+ * @version 1.3, 6 de junio de 2026
  */
 public class PanelExpendedor extends JPanel {
     private Expendedor exp;

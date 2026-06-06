@@ -10,7 +10,7 @@ import tarea3.logica.Expendedor;
  * Se encarga de dibujar el panel de la derecha, mostrar el monedero, los botones de seleccion,
  * y capturar las interacciones del usuario mediante clicks del mouse.
  * @author Daniel Lopez
- * @version 1.0, 2 de junio de 2026
+ * @version 1.1, 2 de junio de 2026
  */
 
 
@@ -42,6 +42,6 @@ public class PanelComprador extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         g.setColor(Color.CYAN);
-        g.fillRect(0, 0, 500, 700);
+        g.fillRect(0, 0, 530, 720);
     }
 }

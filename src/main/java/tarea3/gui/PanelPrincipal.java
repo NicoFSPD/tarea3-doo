@@ -39,8 +39,8 @@ public class PanelPrincipal extends JPanel {
         /**
          * Dimensiones fisicas de cada panel en pantalla
          */
-        exp.setBounds(0, 0, 700, 700);
-        com.setBounds(770, 0, 500, 700);
+        exp.setBounds(0, 0, 750, 720);
+        com.setBounds(750, 0, 530, 720);
 
         /**
          * Agregar componentes al contenedor para que Swing los reconosca
