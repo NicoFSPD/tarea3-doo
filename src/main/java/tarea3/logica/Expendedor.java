@@ -167,4 +167,12 @@ public int getCantidadMonedasAlmacenadas() {
 public Moneda getMonedaAlmacenadaPorIndice(int i) {
         return this.monedasAlmacenadas.getElementoPorIndice(i);
 }
+    /**
+     * Permite a la interfaz grafica espiar el compartimento de retiro
+     * para saber que producto dibujar sin removerlo del deposito.
+     * @return El producto en espera, o null si esta vacio.
+     */
+public Producto peekProductoRetiro() {
+        return this.productoEnDepositoRetiro;
+}
 }
