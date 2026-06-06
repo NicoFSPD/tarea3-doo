@@ -7,6 +7,10 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.util.Objects;
 import tarea3.logica.Expendedor;
+import tarea3.logica.Moneda;
+import tarea3.logica.Moneda100;
+import tarea3.logica.Moneda500;
+import tarea3.logica.Moneda1000;
 import tarea3.logica.Producto;
 
 /**
@@ -27,10 +31,16 @@ public class PanelExpendedor extends JPanel {
     private Image imgFanta;
     private Image imgSnickers;
     private Image imgSuper8;
+    // ATRIBUTOS NUEVOS PARA LAS MONEDAS
+    private Image imgM100;
+    private Image imgM500;
+    private Image imgM1000;
+    private Image imgM1500;
 
     /**
      * Constructor de la clase PanelExpendedor.
      * Enlaza el modelo logico, configura el fondo y precarga las imagenes desde los recursos.
+     *
      * @param exp recibe y asigna la interfaz para conectar la vista.
      */
     public PanelExpendedor(Expendedor exp) {
@@ -49,6 +59,11 @@ public class PanelExpendedor extends JPanel {
             imgFanta = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/fanta.png"))).getImage();
             imgSnickers = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/snickers.png"))).getImage();
             imgSuper8 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/super8.png"))).getImage();
+            // CARGA DE LAS NUEVAS TEXTURAS DE MONEDAS
+            imgM100 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/moneda100.png"))).getImage();
+            imgM500 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/moneda500.png"))).getImage();
+            imgM1000 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/moneda1000.png"))).getImage();
+            imgM1500 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/moneda1500.png"))).getImage();
         } catch (Exception e) {
             System.out.println("Error critico al cargar las imagenes del expendedor: " + e.getMessage());
         }
@@ -57,6 +72,7 @@ public class PanelExpendedor extends JPanel {
     /**
      * Procesa los clicks del mouse realizados dentro de la region del expendedor.
      * Hace el rellenado automatico de todos los depósitos de productos de la maquina.
+     *
      * @param x coordenada horizontal relativa.
      * @param y coordenada vertical relativa.
      */
@@ -69,6 +85,7 @@ public class PanelExpendedor extends JPanel {
     /**
      * Realiza el renderizado y dibujo de los componentes visuales del sector del expendedor.
      * Recorre secuencialmente cada deposito del modelo para renderizar las imagenes en stock.
+     *
      * @param g el objeto graphics utilizado para pintar en el componente.
      */
     @Override
@@ -140,15 +157,51 @@ public class PanelExpendedor extends JPanel {
         }
 
         /**
-         * Deposito especial de retiro de un solo producto (Centrado matematico)
+         * Deposito especial de retiro de un solo producto (Movido a la derecha)
+         * El cuadro mide 110 de ancho. Al empezar en X=550, termina en X=660,
+         * alineandose justo con el borde derecho del vidrio.
          */
         g.setColor(Color.BLACK);
-        g.fillRect(300, 540, 110, 110);
+        g.fillRect(550, 540, 110, 110);
         g.setColor(Color.DARK_GRAY);
-        g.drawString("RETIRO PRODUCTO", 305, 535);
+        g.drawString("RETIRO PRODUCTO", 555, 535); // Ajustado texto a X=555
+
+        /**
+         * Caja fuerte de monedas almacenadas.
+         */
+        g.setColor(new Color(60, 60, 60));
+        g.fillRect(50, 540, 470, 110);
+        g.setColor(Color.DARK_GRAY);
+        g.drawString("MONEDAS INTERNAS", 50, 535);
+
+        int cantMonedas = exp.getCantidadMonedasAlmacenadas();
+        for (int i = 0; i < cantMonedas; i++) {
+            int fila = i / 15;
+            int col = i % 15;
+            int posX = 65 + (col * 30);
+            int posY = 550 + (fila * 30);
+
+            if (posY < 640) {
+                try {
+                    Moneda m = exp.getMonedaAlmacenadaPorIndice(i);
+                    Image imgMoneda = null;
+
+                    if (m instanceof Moneda100) imgMoneda = imgM100;
+                    else if (m instanceof Moneda500) imgMoneda = imgM500;
+                    else if (m instanceof Moneda1000) imgMoneda = imgM1000;
+                    else if (m != null && m.getClass().getSimpleName().equals("Moneda1500")) imgMoneda = imgM1500;
+
+                    if (imgMoneda != null) {
+                        g.drawImage(imgMoneda, posX, posY, 25, 25, this);
+                    }
+                } catch (Exception e) {
+                }
+            }
+        }
 
         /**
          * Dibuja la imagen real del producto si hay una compra exitosa esperando
+         * (Movida a la nueva posicion del deposito de retiro).
          */
         Producto prodEnEspera = exp.peekProductoRetiro();
         if (prodEnEspera != null) {
@@ -162,12 +215,7 @@ public class PanelExpendedor extends JPanel {
             else if (tipo.equals("Super8")) imgA_Dibujar = imgSuper8;
 
             if (imgA_Dibujar != null) {
-
-                if (tipo.equals("Snickers") || tipo.equals("Super8")) {
-                    g.drawImage(imgA_Dibujar, 333, 580, 45, 30, this);
-                } else {
-                    g.drawImage(imgA_Dibujar, 343, 570, 25, 50, this);
-                }
+                g.drawImage(imgA_Dibujar, 595, 570, 25, 50, this);
             }
         }
     }
