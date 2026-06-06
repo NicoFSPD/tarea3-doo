@@ -1,5 +1,4 @@
-package tarea3.logica;
-
+package org.example;
 import java.util.ArrayList;
 /**
  * Clase generica que representa un deposito para almacenar elementos de tipo T
@@ -38,5 +37,9 @@ public class Deposito<T>{
             return al.remove(0);
         }
 
+    }
+
+    public int getCantidad(){
+        return this.al.size();
     }
 }
