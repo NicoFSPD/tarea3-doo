@@ -1,5 +1,4 @@
-package tarea3.logica;
-
+package org.example;
 /**
  * Clase que representa a un comprador de productos de un expendedor
  * El comprador interactua con el expendedor usando una moneda, consume el
@@ -34,7 +33,10 @@ public class Comprador{
             /**
              * Intento de compra en el expendedor
              */
-            Producto p = exp.comprarProducto(m, cualProducto);
+            //en esta seccion de codigo antes daba error, ahora quedó solucionado
+            exp.comprarProducto(m, cualProducto);
+            //-----------------------------------------------------------
+            Producto p = exp.getProducto();
             if (p != null) {
                 this.sonido = p.consumir();
             }
@@ -46,6 +48,9 @@ public class Comprador{
             /**
              * Recuperacion de todas las monedas del deposito en el vuelto
              */
+        } catch (DepositoObstruidoException e) {
+            throw new RuntimeException(e);      //se le agrego la recepcion de esta excepcion, lo pedia
+            //intellij al compilar.
         } finally {
             boolean hayVuelto = true;
             while (hayVuelto) {
