@@ -1,30 +1,57 @@
 package tarea3.gui;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.util.Objects;
 import tarea3.logica.Expendedor;
 import tarea3.logica.Producto;
 
 /**
  * Clase que representa la vista y el controlador del expendedor en la interfaz grafica.
  * Se encarga de dibujar la estructura fisica de la maquina, sus compartimientos,
- * los estantes de productos y las monedas almacenadas en los depositos.
+ * los estantes de productos y las imagenes correspondientes a cada elemento en stock.
  * @author Daniel Lopez
  * @author Eduardo Riveros
  * @author Nicolas Silva
- * @version 1.3, 6 de junio de 2026
+ * @version 1.4, 6 de junio de 2026
  */
 public class PanelExpendedor extends JPanel {
     private Expendedor exp;
 
+    // Objetos Image para almacenar las texturas cargadas
+    private Image imgCoca;
+    private Image imgSprite;
+    private Image imgFanta;
+    private Image imgSnickers;
+    private Image imgSuper8;
+
     /**
      * Constructor de la clase PanelExpendedor.
+     * Enlaza el modelo logico, configura el fondo y precarga las imagenes desde los recursos.
      * @param exp recibe y asigna la interfaz para conectar la vista.
      */
     public PanelExpendedor(Expendedor exp) {
         this.exp = exp;
         this.setBackground(new Color(230, 230, 230));
+        cargarImagenes();
+    }
+
+    /**
+     * Carga de forma segura los archivos de imagen desde la carpeta de recursos de Maven.
+     */
+    private void cargarImagenes() {
+        try {
+            imgCoca = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/cocacola.png"))).getImage();
+            imgSprite = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/sprite.png"))).getImage();
+            imgFanta = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/fanta.png"))).getImage();
+            imgSnickers = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/snickers.png"))).getImage();
+            imgSuper8 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/super8.png"))).getImage();
+        } catch (Exception e) {
+            System.out.println("Error critico al cargar las imagenes del expendedor: " + e.getMessage());
+        }
     }
 
     /**
@@ -41,7 +68,7 @@ public class PanelExpendedor extends JPanel {
 
     /**
      * Realiza el renderizado y dibujo de los componentes visuales del sector del expendedor.
-     * Recorre secuencialmente cada deposito del modelo para dibujar los stocks de productos.
+     * Recorre secuencialmente cada deposito del modelo para renderizar las imagenes en stock.
      * @param g el objeto graphics utilizado para pintar en el componente.
      */
     @Override
@@ -49,113 +76,99 @@ public class PanelExpendedor extends JPanel {
         super.paintComponent(g);
 
         /**
-         * Carcasa exterior del expendedor
+         * Carcasa exterior del expendedor (Centrada y extendida)
          */
         g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(30, 30, 420, 680);
+        g.fillRect(30, 30, 650, 640);
         g.setColor(Color.DARK_GRAY);
-        g.drawRect(30, 30, 420, 680);
+        g.drawRect(30, 30, 650, 640);
 
         g.setColor(Color.BLACK);
-        g.drawString("EXPENDEDOR", 200, 25);
+        g.drawString("EXPENDEDOR", 315, 25);
 
         /**
-         * Vidrio de exhibicion (Fondo oscuro)
+         * Vidrio de exhibicion (Fondo oscuro centrado simetricamente)
          */
         g.setColor(new Color(40, 45, 50));
-        g.fillRect(50, 50, 380, 460);
+        g.fillRect(50, 50, 610, 440);
 
         /**
          * Renderizado de stock: COCA-COLAS (Estante 1)
          */
         g.setColor(Color.GRAY);
-        g.drawLine(50, 120, 430, 120);
+        g.drawLine(50, 120, 660, 120);
         int stockCoca = exp.getDepositoCoca().getCantidad();
         for (int i = 0; i < stockCoca; i++) {
-            g.setColor(Color.RED);
-            g.fillRect(65 + (i * 35), 65, 25, 50);
-            g.setColor(Color.WHITE);
-            g.drawString("C", 73 + (i * 35), 95);
+            g.drawImage(imgCoca, 150 + (i * 60), 60, 30, 55, this);
         }
 
         /**
          * Renderizado de stock: SPRITES (Estante 2)
          */
-        g.setColor(Color.GRAY);
-        g.drawLine(50, 210, 430, 210);
+        g.drawLine(50, 210, 660, 210);
         int stockSprite = exp.getDepositoSprite().getCantidad();
         for (int i = 0; i < stockSprite; i++) {
-            g.setColor(Color.GREEN);
-            g.fillRect(65 + (i * 35), 155, 25, 50);
-            g.setColor(Color.YELLOW);
-            g.drawString("S", 73 + (i * 35), 185);
+            g.drawImage(imgSprite, 150 + (i * 60), 150, 30, 55, this);
+
         }
 
         /**
          * Renderizado de stock: FANTAS (Estante 3)
          */
-        g.setColor(Color.GRAY);
-        g.drawLine(50, 300, 430, 300);
+        g.drawLine(50, 300, 660, 300);
         int stockFanta = exp.getDepositoFanta().getCantidad();
         for (int i = 0; i < stockFanta; i++) {
-            g.setColor(Color.ORANGE);
-            g.fillRect(65 + (i * 35), 245, 25, 50);
-            g.setColor(Color.BLUE);
-            g.drawString("F", 73 + (i * 35), 275);
+            g.drawImage(imgFanta, 150 + (i * 60), 240, 30, 55, this);
         }
 
         /**
          * Renderizado de stock: SNICKERS (Estante 4)
          */
-        g.setColor(Color.GRAY);
-        g.drawLine(50, 390, 430, 390);
+        g.drawLine(50, 390, 660, 390);
         int stockSnickers = exp.getDepositoSnickers().getCantidad();
         for (int i = 0; i < stockSnickers; i++) {
-            g.setColor(new Color(100, 50, 20));
-            g.fillRect(65 + (i * 50), 345, 45, 30);
-            g.setColor(Color.WHITE);
-            g.drawString("Snk", 75 + (i * 50), 365);
+            g.drawImage(imgSnickers, 100 + (i * 75), 345, 60, 30, this);
         }
 
         /**
          * Renderizado de stock: SUPER 8 (Estante 5)
          */
-        g.setColor(Color.GRAY);
-        g.drawLine(50, 480, 430, 480);
+        g.drawLine(50, 480, 660, 480);
         int stockSuper8 = exp.getDepositoSuper8().getCantidad();
         for (int i = 0; i < stockSuper8; i++) {
-            g.setColor(Color.BLACK);
-            g.fillRect(65 + (i * 50), 435, 45, 30);
-            g.setColor(Color.YELLOW);
-            g.drawRect(65 + (i * 50), 435, 45, 30);
-            g.drawString("S8", 78 + (i * 50), 455);
+            g.drawImage(imgSuper8, 90 + (i * 75), 435, 70, 40, this);
         }
 
         /**
-         * Zona de ranura de Monedas
+         * Deposito especial de retiro de un solo producto (Centrado matematico)
          */
         g.setColor(Color.BLACK);
-        g.fillRect(50, 520, 380, 30);
-        g.setColor(Color.GREEN);
-        g.drawString("$INSERT COIN", 190, 540);
-
-        /**
-         * Deposito especial de retiro de un solo producto
-         */
-        g.setColor(Color.BLACK);
-        g.fillRect(250, 570, 100, 110);
+        g.fillRect(300, 540, 110, 110);
         g.setColor(Color.DARK_GRAY);
-        g.drawString("RETIRO PRODUCTO", 245, 565);
+        g.drawString("RETIRO PRODUCTO", 305, 535);
 
         /**
-         * Dibuja la lata/snack si hay una compra exitosa esperando
+         * Dibuja la imagen real del producto si hay una compra exitosa esperando
          */
         Producto prodEnEspera = exp.peekProductoRetiro();
         if (prodEnEspera != null) {
-            g.setColor(Color.LIGHT_GRAY);
-            g.fillRect(275, 600, 50, 50);
-            g.setColor(Color.BLACK);
-            g.drawString("Listo", 285, 630);
+            String tipo = prodEnEspera.getClass().getSimpleName();
+            Image imgA_Dibujar = null;
+
+            if (tipo.equals("CocaCola")) imgA_Dibujar = imgCoca;
+            else if (tipo.equals("Sprite")) imgA_Dibujar = imgSprite;
+            else if (tipo.equals("Fanta")) imgA_Dibujar = imgFanta;
+            else if (tipo.equals("Snickers")) imgA_Dibujar = imgSnickers;
+            else if (tipo.equals("Super8")) imgA_Dibujar = imgSuper8;
+
+            if (imgA_Dibujar != null) {
+
+                if (tipo.equals("Snickers") || tipo.equals("Super8")) {
+                    g.drawImage(imgA_Dibujar, 333, 580, 45, 30, this);
+                } else {
+                    g.drawImage(imgA_Dibujar, 343, 570, 25, 50, this);
+                }
+            }
         }
     }
 }

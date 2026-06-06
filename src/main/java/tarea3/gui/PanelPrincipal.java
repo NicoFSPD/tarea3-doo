@@ -32,7 +32,7 @@ public class PanelPrincipal extends JPanel {
         /**
          * Iniciacion de modelo logico y de las vistas
          */
-        modeloExpendedor = new Expendedor(5);
+        modeloExpendedor = new Expendedor(7);
         exp = new PanelExpendedor(modeloExpendedor);
         com = new PanelComprador(modeloExpendedor, this);
 
