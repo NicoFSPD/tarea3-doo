@@ -1,4 +1,5 @@
-package tarea3.logica;
+package org.example;
+
 
 //------------------------------- SUPERCLASE -----------------------------------------
 
@@ -6,7 +7,7 @@ package tarea3.logica;
  * clase abstracta de objeto que puede tomarse como bebida o dulce y sus respectivos tipos
  * Define la propiedad serie y metodos que tendrán luego los productos disponibles.
  */
-abstract class Producto{       //super clase
+public abstract class Producto{       //super clase
     private int serie;
 
     /**
@@ -31,6 +32,3 @@ abstract class Producto{       //super clase
      */
     public abstract String consumir();  //metodo abstracto
 }
-
-
-
