@@ -37,7 +37,28 @@ public class PanelComprador extends JPanel {
      */
     public PanelComprador(Expendedor exp, PanelPrincipal parent) {
         this.exp = exp;
-        this.parent = parent;
+        this.com = com;
+        this.panelPrincipal = parent;
+
+        //BOTONES PARA LAS OPCIONES DE PRODUCTO
+        javax.swing.JButton btncoca = new javax.swing.JButton("COCA-COLA (1200$)");
+        javax.swing.JButton btnsprite = new javax.swing.JButton("SPRITE (1200$)");
+        javax.swing.JButton btnfanta = new javax.swing.JButton("FANTA (1200$)");
+        javax.swing.JButton btnsnick = new javax.swing.JButton("SNICKERS (800$)");
+        javax.swing.JButton btnsu8 = new javax.swing.JButton("SUPER8 (700$)");
+
+        //BOTONES PARA SELECCION DE MONEDA
+        javax.swing.JButton btn100 = new javax.swing.JButton("100$");
+        javax.swing.JButton btn500 = new javax.swing.JButton("500$");
+        javax.swing.JButton btn1000 = new javax.swing.JButton("1000$");
+        javax.swing.JButton btn1500 = new javax.swing.JButton("1500$");
+
+        //BOTONES PARA ACCIONAR
+        javax.swing.JButton btnPagar = new javax.swing.JButton("PAGAR");
+        javax.swing.JButton btnVuelto = new javax.swing.JButton("RETIRAR VUELTO");
+
+        add(btncoca);
+
     }
 
     /**
