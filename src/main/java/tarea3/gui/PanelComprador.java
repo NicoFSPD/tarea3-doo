@@ -2,8 +2,8 @@ package tarea3.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
 
+import tarea3.logica.Comprador;
 import tarea3.logica.Expendedor;
 
 /**
@@ -16,29 +16,27 @@ import tarea3.logica.Expendedor;
 
 
 public class PanelComprador extends JPanel {
+
     private Expendedor exp;
-    private PanelPrincipal parent;
+    private Comprador com;
+    private PanelMochila panelMochila;
+    private PanelMonedero panelMonedero;
+    private PanelPrincipal panelPrincipal;
 
-    // Objetos Image para almacenar las texturas cargadas
-    private Image imgCoca;
-    private Image imgSprite;
-    private Image imgFanta;
-    private Image imgSnickers;
-    private Image imgSuper8;
-    // ATRIBUTOS NUEVOS PARA LAS MONEDAS
-    private Image imgM100;
-    private Image imgM500;
-    private Image imgM1000;
-    private Image imgM1500;
 
-    /**Constructor de la clase PanelComprador.
-     * @param exp el modelo logico de la maquina expendedora.
-     * @param parent referencia del panel principal para poder actualizarce en la pantalla.
-     */
-    public PanelComprador(Expendedor exp, PanelPrincipal parent) {
+    public PanelComprador(Comprador com, Expendedor exp, PanelPrincipal parent) {
         this.exp = exp;
         this.com = com;
         this.panelPrincipal = parent;
+
+        setLayout(null);
+        setBackground(new Color(150,150,150));
+
+        // --- PANEL DE SELECCION DE PRODUCTOS ---
+
+        JPanel panelProductos = new JPanel(new GridLayout(2, 3, 5, 5));
+        panelProductos.setBackground(new Color(0, 180, 180));
+        panelProductos.setBounds(10, 10, 510, 120);
 
         //BOTONES PARA LAS OPCIONES DE PRODUCTO
         javax.swing.JButton btncoca = new javax.swing.JButton("COCA-COLA (1200$)");
@@ -46,6 +44,13 @@ public class PanelComprador extends JPanel {
         javax.swing.JButton btnfanta = new javax.swing.JButton("FANTA (1200$)");
         javax.swing.JButton btnsnick = new javax.swing.JButton("SNICKERS (800$)");
         javax.swing.JButton btnsu8 = new javax.swing.JButton("SUPER8 (700$)");
+
+        panelProductos.add(btncoca);
+        panelProductos.add(btnsprite);
+        panelProductos.add(btnfanta);
+        panelProductos.add(btnsnick);
+        panelProductos.add(btnsu8);
+
 
         //BOTONES PARA SELECCION DE MONEDA
         javax.swing.JButton btn100 = new javax.swing.JButton("100$");
@@ -57,31 +62,13 @@ public class PanelComprador extends JPanel {
         javax.swing.JButton btnPagar = new javax.swing.JButton("PAGAR");
         javax.swing.JButton btnVuelto = new javax.swing.JButton("RETIRAR VUELTO");
 
-        add(btncoca);
+        add(panelProductos);
 
     }
 
-    /**
-     * Carga de forma segura los archivos de imagen desde la carpeta de recursos de Maven.
-     */
-    private void cargarImagenes() {
-        try {
-            imgCoca = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/cocacola.png"))).getImage();
-            imgSprite = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/sprite.png"))).getImage();
-            imgFanta = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/fanta.png"))).getImage();
-            imgSnickers = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/snickers.png"))).getImage();
-            imgSuper8 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/super8.png"))).getImage();
-            // CARGA DE LAS NUEVAS TEXTURAS DE MONEDAS
-            imgM100 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/moneda100.png"))).getImage();
-            imgM500 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/moneda500.png"))).getImage();
-            imgM1000 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/moneda1000.png"))).getImage();
-            imgM1500 = new ImageIcon(Objects.requireNonNull(getClass().getResource("/images/moneda1500.png"))).getImage();
-        } catch (Exception e) {
-            System.out.println("Error critico al cargar las imagenes del expendedor: " + e.getMessage());
-        }
+    public void actualizar(){
+        panelPrincipal.repaint();
     }
-
-
 
     /**Procesa y evalua los clicks del mouse realizados dentro de la region del comprador.
      * Permite al comprador seleccionar productos, escoger monedas para el pago o retirar productos.
@@ -97,7 +84,11 @@ public class PanelComprador extends JPanel {
      */
     @Override
     public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         g.setColor(Color.CYAN);
-        g.fillRect(0, 0, 530, 720);
+        g.fillRect(0, 0, getWidth(), getHeight());
+
+        g.setColor(Color.BLACK);
+        g.drawString("PRODUCTOS", 10, 8);
     }
 }
