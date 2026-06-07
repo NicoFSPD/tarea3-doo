@@ -32,9 +32,12 @@ public class PanelComprador extends JPanel {
         setLayout(null);
         setBackground(new Color(150,150,150));
 
-        // --- PANEL DE SELECCION DE PRODUCTOS ---
 
-        JPanel panelProductos = new JPanel(new GridLayout(2, 3, 5, 5));
+        //#################################################################
+        //          --- PANEL DE SELECCION DE PRODUCTOS ---
+        //#################################################################
+
+        JPanel panelProductos = new JPanel(new FlowLayout());
         panelProductos.setBackground(new Color(0, 180, 180));
         panelProductos.setBounds(10, 10, 510, 120);
 
@@ -45,12 +48,25 @@ public class PanelComprador extends JPanel {
         javax.swing.JButton btnsnick = new javax.swing.JButton("SNICKERS (800$)");
         javax.swing.JButton btnsu8 = new javax.swing.JButton("SUPER8 (700$)");
 
+        btncoca.setBackground(new Color(255,0,0));
+        btnsprite.setBackground(new Color(0, 255, 11));
+        btnfanta.setBackground(new Color(255, 128,0));
+        btnsnick.setBackground(new Color(0, 0, 255));
+        btnsu8.setBackground(new Color(0, 0, 0));
+
         panelProductos.add(btncoca);
         panelProductos.add(btnsprite);
         panelProductos.add(btnfanta);
         panelProductos.add(btnsnick);
         panelProductos.add(btnsu8);
 
+        //#################################################################
+        //                   --- PANEL PARA ACCIONAR ---
+        //#################################################################
+
+        JPanel panelAcciones = new JPanel(new GridLayout(3, 2, 5, 5));
+        panelAcciones.setBackground(new Color(0, 160, 160));
+        panelAcciones.setBounds(10, 140, 510, 150);
 
         //BOTONES PARA SELECCION DE MONEDA
         javax.swing.JButton btn100 = new javax.swing.JButton("100$");
@@ -62,7 +78,20 @@ public class PanelComprador extends JPanel {
         javax.swing.JButton btnPagar = new javax.swing.JButton("PAGAR");
         javax.swing.JButton btnVuelto = new javax.swing.JButton("RETIRAR VUELTO");
 
+        btnPagar.setBackground(new Color(40, 230, 230));
+        btnVuelto.setBackground(new Color(230, 40, 230));
+
+        panelAcciones.add(btn100);
+        panelAcciones.add(btn500);
+        panelAcciones.add(btn1000);
+        panelAcciones.add(btn1500);
+        panelAcciones.add(btnPagar);
+        panelAcciones.add(btnVuelto);
+
+
+
         add(panelProductos);
+        add(panelAcciones);
 
     }
 
@@ -90,5 +119,6 @@ public class PanelComprador extends JPanel {
 
         g.setColor(Color.BLACK);
         g.drawString("PRODUCTOS", 10, 8);
+        g.drawString("FORMA DE PAGO Y RETIRO DE VUELTO", 10, 138);
     }
 }
