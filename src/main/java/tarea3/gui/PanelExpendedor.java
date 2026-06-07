@@ -46,6 +46,7 @@ public class PanelExpendedor extends JPanel {
     public PanelExpendedor(Expendedor exp) {
         this.exp = exp;
         this.setBackground(new Color(230, 230, 230));
+        this.setToolTipText("");    //seteo para que el swing llame a getToolTipText
         cargarImagenes();
     }
 
@@ -80,6 +81,93 @@ public class PanelExpendedor extends JPanel {
         System.out.println("Expendedor procesando click en: (" + x + ", " + y + ")");
         this.exp.rellenarDepositos();
         this.repaint();
+    }
+
+    @Override
+    public String getToolTipText(java.awt.event.MouseEvent event) {
+        int x = event.getX();
+        int y = event.getY();
+
+        if ((y>=60) && (y<=115)){      //estante de coca cola
+            int stock =exp.getDepositoCoca().getCantidad();
+            for (int i=0;i<stock;i++){
+                int posX =(150+(i*60));
+                if ((x>=posX) && (x<=(posX+30))){
+                    Producto p =exp.getDepositoCoca().getElementoPorIndice(i);
+                    return "Coca-Cola (Serie: " + p.getSerie() + ")";
+                }
+            }
+        }
+
+        if ((y>=150) && (y<=205)){     //estante de sprites
+            int stock =exp.getDepositoSprite().getCantidad();
+            for (int i =0;i<stock;i++) {
+                int posX = (150+(i*60));
+                if ((x>=posX) &&(x<=posX+30)) {
+                    Producto p =exp.getDepositoSprite().getElementoPorIndice(i);
+                    return "Sprite (Serie: " + p.getSerie() + ")";
+                }
+            }
+        }
+
+        if ((y>=240) && (y<=295)){     //estanteria de las fantas
+            int stock = exp.getDepositoFanta().getCantidad();
+            for(int i=0;i<stock;i++){
+                int posX =(150+(i*60));
+                if ((x>=posX) && (x<=posX+30)){
+                    Producto p =exp.getDepositoFanta().getElementoPorIndice(i);
+                    return "Fanta (Serie: " + p.getSerie() + ")";
+                }
+            }
+        }
+
+        if ((y>=345) && (y<=375)){         //estenteria de snickers
+            int stock =exp.getDepositoSnickers().getCantidad();
+            for (int i=0;i<stock;i++) {
+                int posX = (100+(i*75));
+                if ((x>=posX) && (x<=posX+60)){
+                    Producto p=exp.getDepositoSnickers().getElementoPorIndice(i);
+                    return "Snickers (Serie: " + p.getSerie() + ")";
+                }
+            }
+        }
+
+        if ((y>=435) && (y<=475)){         //estanteria super 8
+            int stock = exp.getDepositoSuper8().getCantidad();
+            for (int i=0;i<stock;i++){
+                int posX = 90 + (i*75);
+                if ((x>=posX) && (x<=(posX+70))){
+                    Producto p=exp.getDepositoSuper8().getElementoPorIndice(i);
+                    return "Super 8 (Serie: " + p.getSerie() + ")";
+                }
+            }
+        }
+
+        if ((x>=550) && (x<=660) && (y>=540) && (y<=650)){     //deposito de retiro
+            Producto prodEnEspera =exp.peekProductoRetiro();
+            if (prodEnEspera!=null){
+                return prodEnEspera.getClass().getSimpleName() + " en Retiro (Serie: " + prodEnEspera.getSerie() + ")";
+            }
+        }
+
+        if ((x>=50) && (x<=520) && (y>=540) && (y<=650)) {      //deposito de monedas (stock de monedas)
+            int cantMonedas = exp.getCantidadMonedasAlmacenadas();
+            for(int i=0; i<cantMonedas;i++) {
+                int fila = i/15;
+                int col = i%15;
+                int posX = 65+(col*30);
+                int posY = 550+(fila*30);
+
+                if ((x>=posX) && (x<=(posX+25)) && (y>=posY) && (y<=(posY+25))){
+                    Moneda m=exp.getMonedaAlmacenadaPorIndice(i);
+                    if (m!=null){
+                        return "Moneda de $" + m.getValor() + " (Serie: " + m.hashCode() + ")";
+                    }
+                }
+            }
+        }
+
+        return super.getToolTipText(event);
     }
 
     /**
