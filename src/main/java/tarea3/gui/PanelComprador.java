@@ -5,6 +5,8 @@ import java.awt.*;
 
 import tarea3.logica.Comprador;
 import tarea3.logica.Expendedor;
+import tarea3.logica.Moneda;
+import tarea3.logica.Producto;
 
 /**
  * Clase que representa la vista y el controlador del comprador en la interfaz grafica.
@@ -12,7 +14,7 @@ import tarea3.logica.Expendedor;
  * y capturar las interacciones del usuario mediante clicks del mouse.
  * @author Daniel Lopez
  * @author Nicolas Silva
- * @version 1.2, 7 de junio de 2026
+ * @version 1.3, 7 de junio de 2026
  */
 
 
@@ -23,7 +25,7 @@ public class PanelComprador extends JPanel {
     private PanelMochila panelMochila;
     private PanelMonedero panelMonedero;
     private PanelPrincipal panelPrincipal;
-
+    private int estadoBoton = -1;
 
 
     /**Constructor del panel de comprador
@@ -46,11 +48,11 @@ public class PanelComprador extends JPanel {
         panelProductos.setBounds(10, 10, 510, 120);
 
         //BOTONES PARA LAS OPCIONES DE PRODUCTO
-        javax.swing.JButton btncoca = new javax.swing.JButton("COCA-COLA (1200$)");
-        javax.swing.JButton btnsprite = new javax.swing.JButton("SPRITE (1200$)");
-        javax.swing.JButton btnfanta = new javax.swing.JButton("FANTA (1200$)");
-        javax.swing.JButton btnsnick = new javax.swing.JButton("SNICKERS (800$)");
-        javax.swing.JButton btnsu8 = new javax.swing.JButton("SUPER8 (700$)");
+        JButton btncoca = new JButton("COCA-COLA (1200$)");
+        JButton btnsprite = new JButton("SPRITE (1200$)");
+        JButton btnfanta = new JButton("FANTA (1200$)");
+        JButton btnsnick = new JButton("SNICKERS (800$)");
+        JButton btnsu8 = new JButton("SUPER8 (700$)");
 
         //COLORES CARACTERISTICOS PARA LOS BOTONES
         btncoca.setBackground(new Color(255,0,0));
@@ -75,17 +77,44 @@ public class PanelComprador extends JPanel {
         panelAcciones.setBounds(10, 140, 510, 150);
 
         //BOTONES PARA SELECCION DE MONEDA
-        javax.swing.JButton btn100 = new javax.swing.JButton("100$");
-        javax.swing.JButton btn500 = new javax.swing.JButton("500$");
-        javax.swing.JButton btn1000 = new javax.swing.JButton("1000$");
-        javax.swing.JButton btn1500 = new javax.swing.JButton("1500$");
+        JButton btn100 = new JButton("100$");
+        JButton btn500 = new JButton("500$");
+        JButton btn1000 = new JButton("1000$");
+        JButton btn1500 = new JButton("1500$");
+
+        //listeners
+        btn100.addActionListener(e -> ingresarMonedaAlExpendedor(100));
+        btn500.addActionListener(e -> ingresarMonedaAlExpendedor(500));
+        btn1000.addActionListener(e -> ingresarMonedaAlExpendedor(1000));
+        btn1500.addActionListener(e -> ingresarMonedaAlExpendedor(1500));
 
         //BOTONES PARA ACCIONAR
-        javax.swing.JButton btnPagar = new javax.swing.JButton("PAGAR");
-        javax.swing.JButton btnVuelto = new javax.swing.JButton("RETIRAR VUELTO");
+        JButton btnPagar = new JButton("PAGAR");
+        JButton btnVuelto = new JButton("RETIRAR VUELTO");
 
         btnPagar.setBackground(new Color(40, 230, 230));
         btnVuelto.setBackground(new Color(230, 40, 230));
+
+        //listeners
+        btnPagar.addActionListener(e -> {
+            if (estadoBoton == -1) {
+                System.out.println("Primero debes seleccionar un producto");
+                return;
+            }
+            try {
+                panelPrincipal.getExpendedor().comprarProducto(estadoBoton);
+                System.out.println("Compra procesada en la maquina");
+            } catch (Exception ex) {
+                System.out.println("Error: " + ex.getMessage());
+            }
+            estadoBoton = -1;
+            actualizar();
+        });
+
+        btnVuelto.addActionListener(e -> {
+            com.recogerVueltoDeMaquina(panelPrincipal.getExpendedor());
+            actualizar();
+        });
 
         //Agregar los botones ya instanciados desde Swing
         panelAcciones.add(btn100);
@@ -123,6 +152,22 @@ public class PanelComprador extends JPanel {
         panelMonedero.repaint();
         panelMochila.repaint();
         panelPrincipal.repaint();
+    }
+
+    /**
+     * Remueve una moneda del monedero del comprador y la transfiere
+     * al deposito de monedas en espera de la maquina expendedora.
+     */
+    private void ingresarMonedaAlExpendedor(int valor) {
+        for (int i = 0; i < com.getMonedero().size(); i++) {
+            if (com.getMonedero().get(i).getValor() == valor) {
+                Moneda m = com.getMonedero().remove(i);
+                panelPrincipal.getExpendedor().recibirMonedaEnEspera(m);
+                actualizar();
+                return;
+            }
+        }
+        System.out.println("No tienes monedas de $" + valor);
     }
 
     /**Procesa y evalua los clicks del mouse realizados dentro de la region del comprador.
