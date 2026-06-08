@@ -44,20 +44,14 @@ public class Comprador {
     }
 
     /**
-     * Ejecuta la orden de compra en el expendedor utilizando una moneda de su inventario.
-     * @param cualProducto entero que identifica el tipo de producto solicitado.
+     * Ejecuta la orden de compra en el expendedor utilizando el saldo acumulado
+     * previamente en el deposito de espera de la maquina.
+     * @param cualProducto entero que identifica la opcion o estante del producto solicitado.
      * @param exp referencia al expendedor donde se realiza la compra.
      */
     public void intentarCompra(int cualProducto, Expendedor exp) {
-        Moneda pago = seleccionarMoneda();
-
-        if (pago == null) {
-            System.out.println("Error: No tienes monedas en el monedero para pagar.");
-            return;
-        }
-
         try {
-            exp.comprarProducto(pago, cualProducto);
+            exp.comprarProducto(cualProducto);
             System.out.println("Compra procesada con exito.");
 
         } catch (PagoIncorrectoException | PagoInsuficienteException | NoHayProductoException | DepositoObstruidoException e) {
