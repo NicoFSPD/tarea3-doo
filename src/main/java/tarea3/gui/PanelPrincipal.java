@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import tarea3.logica.Comprador;
 import tarea3.logica.Expendedor;
 
 /**
@@ -19,6 +21,7 @@ public class PanelPrincipal extends JPanel {
     private PanelComprador com;
     private PanelExpendedor exp;
     private Expendedor modeloExpendedor;
+    private Comprador modeloComprador;
 
     /**
      * Constructor de la clase PanelPrincipal.
@@ -33,8 +36,9 @@ public class PanelPrincipal extends JPanel {
          * Iniciacion de modelo logico y de las vistas
          */
         modeloExpendedor = new Expendedor(7);
+        modeloComprador = new Comprador();
         exp = new PanelExpendedor(modeloExpendedor);
-        com = new PanelComprador(modeloExpendedor, this);
+        com = new PanelComprador(modeloComprador, modeloExpendedor, this);
 
         /**
          * Dimensiones fisicas de cada panel en pantalla
