@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import tarea3.logica.Comprador;
 import tarea3.logica.Expendedor;
 
@@ -79,5 +78,12 @@ public class PanelPrincipal extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+    }
+    /**
+     * Permite obtener la instancia del expendedor para comunicar los paneles.
+     * @return el objeto Expendedor de la aplicacion.
+     */
+    public Expendedor getExpendedor() {
+        return this.modeloExpendedor;
     }
 }
