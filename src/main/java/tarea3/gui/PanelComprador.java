@@ -89,13 +89,26 @@ public class PanelComprador extends JPanel {
         panelAcciones.add(btnVuelto);
 
 
+        //#################################################################
+        //       --- PANELES DE MONEDERO Y PRODUCTOS ADQUIRIDOS ---
+        //#################################################################
+
+        panelMonedero = new PanelMonedero(com);
+        panelMonedero.setBounds(10, 300, 510, 190);
+
+        panelMochila = new PanelMochila(com);
+        panelMochila.setBounds(10, 500, 510, 210);
 
         add(panelProductos);
         add(panelAcciones);
+        add(panelMonedero);
+        add(panelMochila);
 
     }
 
     public void actualizar(){
+        panelMonedero.repaint();
+        panelMochila.repaint();
         panelPrincipal.repaint();
     }
 
@@ -120,5 +133,7 @@ public class PanelComprador extends JPanel {
         g.setColor(Color.BLACK);
         g.drawString("PRODUCTOS", 10, 8);
         g.drawString("FORMA DE PAGO Y RETIRO DE VUELTO", 10, 138);
+        g.drawString("MONEDERO", 10, 298);
+        g.drawString("MOCHILA", 10, 498);
     }
 }
