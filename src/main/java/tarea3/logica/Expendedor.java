@@ -19,6 +19,7 @@ public class Expendedor {
     private Producto productoEnDepositoRetiro = null;
     private Deposito<Moneda> monedasAlmacenadas;
     private int capacidadMaximaPorDeposito;
+    private Deposito<Moneda> monedasEnEspera = new Deposito<>();
 
     /**
      * Constructor para inicializar los contenedores y abastecer la maquina.
@@ -50,22 +51,28 @@ public class Expendedor {
     /**
      * Procesa la compra de un producto utilizando una moneda de pago.
      * Si la transaccion es exitosa, el producto se desplaza al deposito de retiro de capacidad uno
-     * y el vuelto se desglosa en monedas de $500 y $100.
-     * @param m La moneda insertada para realizar el pago.
-     * @param cual El identificador numérico del producto seleccionado.
-     * @throws PagoIncorrectoException si la moneda ingresada es nula.
+     * y el vuelto se desglosa en monedas de $1500, $1000, $500 y $100.
+     * @param cual La ID del producto seleccionado.
+     * @throws PagoIncorrectoException si no se han ingresado monedas.
      * @throws DepositoObstruidoException si el compartimento de retiro ya contiene un producto.
-     * @throws NoHayProductoException si el producto seleccionado no existe o se encuentra agotado.
-     * @throws PagoInsuficienteException si el valor de la moneda es menor al precio del producto.
+     * @throws NoHayProductoException si el producto seleccionado no existe o esta agotado.
+     * @throws PagoInsuficienteException si el saldo acumulado es menor al precio del producto.
      */
-    public void comprarProducto(Moneda m, int cual) throws PagoIncorrectoException, PagoInsuficienteException, NoHayProductoException, DepositoObstruidoException {
-        if (m == null) {
-            throw new PagoIncorrectoException("No se ha insertado ninguna moneda\n");
+    public void comprarProducto(int cual) throws PagoIncorrectoException, PagoInsuficienteException, NoHayProductoException, DepositoObstruidoException {
+        int saldoAcumulado = 0;
+        int cantMonedasEspera = monedasEnEspera.getCantidad();
+
+        for (int i = 0; i < cantMonedasEspera; i++) {
+            saldoAcumulado += monedasEnEspera.getElementoPorIndice(i).getValor();
+        }
+
+        if (saldoAcumulado == 0) {
+            throw new PagoIncorrectoException("No se ha insertado ninguna moneda.");
         }
 
         if (this.productoEnDepositoRetiro != null) {
-            monVu.addElemento(m);
-            throw new DepositoObstruidoException("Deposito de salida ocupado. Retire el producto anterior");
+            vaciarDepositoHacia(monedasEnEspera, monVu);
+            throw new DepositoObstruidoException("Deposito de salida ocupado. Retire el producto anterior.");
         }
 
         int precio;
@@ -77,38 +84,56 @@ public class Expendedor {
         else if (cual == Opcion.SNICKERS.ID) { precio = Opcion.SNICKERS.precio; D = snickers; }
         else if (cual == Opcion.SUPER8.ID) { precio = Opcion.SUPER8.precio; D = super8; }
         else {
-            monVu.addElemento(m);
-            throw new NoHayProductoException("El producto no existe dentro del expendedor");
+            vaciarDepositoHacia(monedasEnEspera, monVu);
+            throw new NoHayProductoException("El producto no existe dentro del expendedor.");
         }
 
-        if (m.getValor() >= precio) {
+        if (saldoAcumulado >= precio) {
             Producto productoExtraido = null;
-
             try {
                 productoExtraido = D.getElemento();
             } catch (NoHayProductoException e) {
-                monVu.addElemento(m);
+                vaciarDepositoHacia(monedasEnEspera, monVu);
                 throw e;
             }
 
             this.productoEnDepositoRetiro = productoExtraido;
-            this.monedasAlmacenadas.addElemento(m);
+            vaciarDepositoHacia(monedasEnEspera, monedasAlmacenadas);
 
-            int vueltoTotal = m.getValor() - precio;
+            int vueltoTotal = saldoAcumulado - precio;
 
-            while (vueltoTotal >= 500) {
-                monVu.addElemento(new Moneda500());
-                vueltoTotal -= 500;
-            }
+            while (vueltoTotal >= 1500) { monVu.addElemento(new Moneda1500()); vueltoTotal -= 1500; }
+            while (vueltoTotal >= 1000) { monVu.addElemento(new Moneda1000()); vueltoTotal -= 1000; }
+            while (vueltoTotal >= 500)  { monVu.addElemento(new Moneda500());  vueltoTotal -= 500;  }
+            while (vueltoTotal >= 100)  { monVu.addElemento(new Moneda100());  vueltoTotal -= 100;  }
 
-            while (vueltoTotal > 0) {
-                monVu.addElemento(new Moneda100());
-                vueltoTotal -= 100;
-            }
         } else {
-            monVu.addElemento(m);
-            throw new PagoInsuficienteException("El producto que quieres comprar tiene un valor mayor a lo que estás pagando");
+            vaciarDepositoHacia(monedasEnEspera, monVu);
+            throw new PagoInsuficienteException("Saldo insuficiente ($" + saldoAcumulado + "). Se necesitan $" + precio);
         }
+    }
+
+    /**
+     * Transfiere de forma secuencial todos los elementos de un deposito a otro.
+     */
+    private void vaciarDepositoHacia(Deposito<Moneda> origen, Deposito<Moneda> destino) {
+        while (origen.getCantidad() > 0) {
+            try {
+                destino.addElemento(origen.getElemento());
+            } catch (NoHayProductoException e) {
+                break;
+            }
+        }
+    }
+
+    public void recibirMonedaEnEspera(Moneda m) { this.monedasEnEspera.addElemento(m); }
+
+    public int getSaldoEnEspera() {
+        int total = 0;
+        for (int i = 0; i < monedasEnEspera.getCantidad(); i++) {
+            total += monedasEnEspera.getElementoPorIndice(i).getValor();
+        }
+        return total;
     }
 
     /**
@@ -124,55 +149,55 @@ public class Expendedor {
      * Permite al comprador retirar el producto del deposito especial de salida, vaciandolo.
      * @return El producto almacenado en el compartimento de retiro.
      */
-public Producto getProducto() {
-    Producto p = this.productoEnDepositoRetiro;
-    this.productoEnDepositoRetiro = null;
-    return p;
-}
+    public Producto getProducto() {
+        Producto p = this.productoEnDepositoRetiro;
+        this.productoEnDepositoRetiro = null;
+        return p;
+    }
 
-/**
- * Rellena de forma automatica todos los depositos de productos que se encuentren por debajo
- * de la capacidad maxima definida en el constructor.
- */
-public void rellenarDepositos() {
-    while (coca.getCantidad() < capacidadMaximaPorDeposito) {
-        coca.addElemento(new CocaCola(100 + coca.getCantidad()));
+    /**
+    * Rellena de forma automatica todos los depositos de productos que se encuentren por debajo
+    * de la capacidad maxima definida en el constructor.
+    */
+    public void rellenarDepositos() {
+        while (coca.getCantidad() < capacidadMaximaPorDeposito) {
+            coca.addElemento(new CocaCola(100 + coca.getCantidad()));
+        }
+        while (sprite.getCantidad() < capacidadMaximaPorDeposito) {
+            sprite.addElemento(new Sprite(200 + sprite.getCantidad()));
+        }
+        while (fanta.getCantidad() < capacidadMaximaPorDeposito) {
+            fanta.addElemento(new Fanta(300 + fanta.getCantidad()));
+        }
+        while (snickers.getCantidad() < capacidadMaximaPorDeposito) {
+            snickers.addElemento(new Snickers(400 + snickers.getCantidad()));
+        }
+        while (super8.getCantidad() < capacidadMaximaPorDeposito) {
+            super8.addElemento(new Super8(500 + super8.getCantidad()));
+        }
     }
-    while (sprite.getCantidad() < capacidadMaximaPorDeposito) {
-        sprite.addElemento(new Sprite(200 + sprite.getCantidad()));
-    }
-    while (fanta.getCantidad() < capacidadMaximaPorDeposito) {
-        fanta.addElemento(new Fanta(300 + fanta.getCantidad()));
-    }
-    while (snickers.getCantidad() < capacidadMaximaPorDeposito) {
-        snickers.addElemento(new Snickers(400 + snickers.getCantidad()));
-    }
-    while (super8.getCantidad() < capacidadMaximaPorDeposito) {
-        super8.addElemento(new Super8(500 + super8.getCantidad()));
-    }
-}
 
-/**
- * Getters para el gui
- */
+    /**
+    * Getters para el gui
+    */
 
-public Deposito<Producto> getDepositoCoca() { return this.coca; }
-public Deposito<Producto> getDepositoSprite() { return this.sprite; }
-public Deposito<Producto> getDepositoFanta() { return this.fanta; }
-public Deposito<Producto> getDepositoSnickers() { return this.snickers; }
-public Deposito<Producto> getDepositoSuper8() { return this.super8; }
-public int getCantidadMonedasAlmacenadas() {
+    public Deposito<Producto> getDepositoCoca() { return this.coca; }
+    public Deposito<Producto> getDepositoSprite() { return this.sprite; }
+    public Deposito<Producto> getDepositoFanta() { return this.fanta; }
+    public Deposito<Producto> getDepositoSnickers() { return this.snickers; }
+    public Deposito<Producto> getDepositoSuper8() { return this.super8; }
+    public int getCantidadMonedasAlmacenadas() {
         return this.monedasAlmacenadas.getCantidad();
 }
-public Moneda getMonedaAlmacenadaPorIndice(int i) {
+    public Moneda getMonedaAlmacenadaPorIndice(int i) {
         return this.monedasAlmacenadas.getElementoPorIndice(i);
 }
-/**
- * Permite a la interfaz grafica espiar el compartimento de retiro
- * para saber que producto dibujar sin removerlo del deposito.
- * @return El producto en espera, o null si esta vacio.
-*/
-public Producto peekProductoRetiro() {
-        return this.productoEnDepositoRetiro;
-}
+    /**
+    * Permite a la interfaz grafica espiar el compartimento de retiro
+    * para saber que producto dibujar sin removerlo del deposito.
+    * @return El producto en espera, o null si esta vacio.
+    */
+    public Producto peekProductoRetiro() {
+           return this.productoEnDepositoRetiro;
+    }
 }
