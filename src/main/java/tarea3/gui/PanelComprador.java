@@ -11,21 +11,25 @@ import tarea3.logica.Expendedor;
  * Se encarga de dibujar el panel de la derecha, mostrar el monedero, los botones de seleccion,
  * y capturar las interacciones del usuario mediante clicks del mouse.
  * @author Daniel Lopez
- * @version 1.1, 2 de junio de 2026
+ * @author Nicolas Silva
+ * @version 1.2, 7 de junio de 2026
  */
 
 
 public class PanelComprador extends JPanel {
 
-    private Expendedor exp;
+    //ATRIBUTOS DEL PANEL
     private Comprador com;
     private PanelMochila panelMochila;
     private PanelMonedero panelMonedero;
     private PanelPrincipal panelPrincipal;
 
 
-    public PanelComprador(Comprador com, Expendedor exp, PanelPrincipal parent) {
-        this.exp = exp;
+
+    /**Constructor del panel de comprador
+     * @param com : Necesita informacion del comprador para representarla
+     * @param parent : Comunicacion con el panel principal del cual depende*/
+    public PanelComprador(Comprador com, PanelPrincipal parent) {
         this.com = com;
         this.panelPrincipal = parent;
 
@@ -48,12 +52,14 @@ public class PanelComprador extends JPanel {
         javax.swing.JButton btnsnick = new javax.swing.JButton("SNICKERS (800$)");
         javax.swing.JButton btnsu8 = new javax.swing.JButton("SUPER8 (700$)");
 
+        //COLORES CARACTERISTICOS PARA LOS BOTONES
         btncoca.setBackground(new Color(255,0,0));
         btnsprite.setBackground(new Color(0, 255, 11));
         btnfanta.setBackground(new Color(255, 128,0));
         btnsnick.setBackground(new Color(0, 0, 255));
         btnsu8.setBackground(new Color(0, 0, 0));
 
+        //Agregar los botones ya instanciados desde Swing
         panelProductos.add(btncoca);
         panelProductos.add(btnsprite);
         panelProductos.add(btnfanta);
@@ -81,6 +87,7 @@ public class PanelComprador extends JPanel {
         btnPagar.setBackground(new Color(40, 230, 230));
         btnVuelto.setBackground(new Color(230, 40, 230));
 
+        //Agregar los botones ya instanciados desde Swing
         panelAcciones.add(btn100);
         panelAcciones.add(btn500);
         panelAcciones.add(btn1000);
@@ -90,7 +97,7 @@ public class PanelComprador extends JPanel {
 
 
         //#################################################################
-        //       --- PANELES DE MONEDERO Y PRODUCTOS ADQUIRIDOS ---
+        // --- PANELES DE MONEDERO Y PRODUCTOS ADQUIRIDOS (MOCHILA) ---
         //#################################################################
 
         panelMonedero = new PanelMonedero(com);
@@ -99,6 +106,7 @@ public class PanelComprador extends JPanel {
         panelMochila = new PanelMochila(com);
         panelMochila.setBounds(10, 500, 510, 210);
 
+        //BLOQUE FINAL DE AGREGADO DE TODOS LOS PANELES (DE COMPOSICION).
         add(panelProductos);
         add(panelAcciones);
         add(panelMonedero);
@@ -106,6 +114,11 @@ public class PanelComprador extends JPanel {
 
     }
 
+    /**
+     * Refresca el renderizado de los paneles de representacion dinamica
+     * y propaga la actualizacion visual hacia el panel principal.
+     * Debe invocarse cada vez que el estado del comprador o del expendedor cambie.
+     */
     public void actualizar(){
         panelMonedero.repaint();
         panelMochila.repaint();
