@@ -38,7 +38,7 @@ public class PanelPrincipal extends JPanel {
         modeloExpendedor = new Expendedor(7);
         modeloComprador = new Comprador();
         exp = new PanelExpendedor(modeloExpendedor);
-        com = new PanelComprador(modeloComprador, modeloExpendedor, this);
+        com = new PanelComprador(modeloComprador, this);
 
         /**
          * Dimensiones fisicas de cada panel en pantalla
