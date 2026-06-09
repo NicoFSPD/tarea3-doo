@@ -1,6 +1,7 @@
 package tarea3.logica;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Clase que representa a un comprador de productos de un expendedor.
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  * @author Daniel Lopez
  * @author Eduardo Riveros
  * @author Nicolas Silva
- * @version 1.2, 6 de junio de 2026
+ * @version 1.3, 9 de junio de 2026
  */
 public class Comprador {
     private ArrayList<Moneda> monedero;
@@ -17,7 +18,7 @@ public class Comprador {
     private String sonido;
 
     /**
-     * Constructor que inicializa al comprador con fondos suficientes
+     * Constructor que inicializa al comprador con monedas suficientes
      * y compartimientos vacios para empezar a interactuar.
      */
     public Comprador() {
@@ -25,38 +26,33 @@ public class Comprador {
         this.mochila = new ArrayList<>();
         this.sonido = null;
 
-        this.monedero.add(new Moneda1000());
-        this.monedero.add(new Moneda1000());
+        this.monedero.add(new Moneda100());
+        this.monedero.add(new Moneda100());
+        this.monedero.add(new Moneda100());
+        this.monedero.add(new Moneda100());
+        this.monedero.add(new Moneda100());
+        this.monedero.add(new Moneda100());
+        this.monedero.add(new Moneda100());
+        this.monedero.add(new Moneda100());
         this.monedero.add(new Moneda500());
-        this.monedero.add(new Moneda100());
-        this.monedero.add(new Moneda100());
-    }
+        this.monedero.add(new Moneda500());
+        this.monedero.add(new Moneda500());
+        this.monedero.add(new Moneda500());
+        this.monedero.add(new Moneda500());
+        this.monedero.add(new Moneda500());
+        this.monedero.add(new Moneda500());
+        this.monedero.add(new Moneda500());
+        this.monedero.add(new Moneda1000());
+        this.monedero.add(new Moneda1000());
+        this.monedero.add(new Moneda1000());
+        this.monedero.add(new Moneda1000());
+        this.monedero.add(new Moneda1500());
+        this.monedero.add(new Moneda1500());
+        this.monedero.add(new Moneda1500());
+        this.monedero.add(new Moneda1500());
 
-    /**
-     * Extrae una moneda del monedero del comprador para efectuar un pago.
-     * @return La moneda seleccionada para pagar, o null si no tiene dinero.
-     */
-    public Moneda seleccionarMoneda() {
-        if (!monedero.isEmpty()) {
-            return monedero.remove(0);
-        }
-        return null;
-    }
 
-    /**
-     * Ejecuta la orden de compra en el expendedor utilizando el saldo acumulado
-     * previamente en el deposito de espera de la maquina.
-     * @param cualProducto entero que identifica la opcion o estante del producto solicitado.
-     * @param exp referencia al expendedor donde se realiza la compra.
-     */
-    public void intentarCompra(int cualProducto, Expendedor exp) {
-        try {
-            exp.comprarProducto(cualProducto);
-            System.out.println("Compra procesada con exito.");
-
-        } catch (PagoIncorrectoException | PagoInsuficienteException | NoHayProductoException | DepositoObstruidoException e) {
-            System.out.println("No se pudo realizar la compra: " + e.getMessage());
-        }
+        Collections.sort(this.monedero);
     }
 
     /**
@@ -90,41 +86,11 @@ public class Comprador {
                 hayVuelto = false;
             }
         }
+        Collections.sort(this.monedero);
     }
-
-    /**
-     * Permite al usuario generar dinero de forma manual, "Monedero infinito eventualmente".
-     * @param m La moneda magica creada desde la interfaz grafica.
-     */
-    public void recargarMonedero(Moneda m) {
-        if (m != null) {
-            this.monedero.add(m);
-        }
-    }
-
-    /**
-     * Metodo para obtener el valor total de dinero disponible en el monedero.
-     * @return suma de los valores de todas las monedas guardadas.
-     */
-    public int cuantoDineroTienes() {
-        int total = 0;
-        for (Moneda m : monedero) {
-            total += m.getValor();
-        }
-        return total;
-    }
-
-    /**
-     * Metodo para obtener la descripcion del ultimo consumo realizado.
-     * @return string con el sonido del producto, o null si no ha consumido nada.
-     */
-    public String queConsumiste() {
-        return this.sonido;
-    }
-
     /**
      * Getters necesarios para que el PanelComprador puedo dibujar los
-     * objetos en pantalla.
+     * objetos en la pantalla.
      * @return
      */
     public ArrayList<Moneda> getMonedero() { return this.monedero; }
