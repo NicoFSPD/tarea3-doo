@@ -3,9 +3,9 @@ package tarea3.logica;
 /**
  * Una enumeracion que le entrega a los productos constantes que los diferencian
  * @author Nicolas Silva
- * @version version 1, 23 de abril de 2026
+ * @version version 1.1, 9 de junio de 2026
  */
-enum Opcion {
+public enum Opcion {
     /** Se definen desde aqui, las constantes*/
     COCA(1,1200),
     SPRITE(2, 1200),
