@@ -5,7 +5,6 @@ import java.awt.*;
 
 import tarea3.logica.Comprador;
 import tarea3.logica.Moneda;
-import tarea3.logica.Producto;
 import tarea3.logica.Opcion;
 
 /**
