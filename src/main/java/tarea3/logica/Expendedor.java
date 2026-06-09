@@ -20,6 +20,11 @@ public class Expendedor {
     private Deposito<Moneda> monedasAlmacenadas;
     private int capacidadMaximaPorDeposito;
     private Deposito<Moneda> monedasEnEspera = new Deposito<>();
+    private int totalCocaCreadas = 0;
+    private int totalSpriteCreadas = 0;
+    private int totalFantaCreadas = 0;
+    private int totalSnickersCreados = 0;
+    private int totalSuper8Creados = 0;
 
     /**
      * Constructor para inicializar los contenedores y abastecer la maquina.
@@ -40,11 +45,11 @@ public class Expendedor {
          * Abastecimiento inicial automatizado
          */
         for (int i = 0; i < numProductos; i++) {
-            coca.addElemento(new CocaCola(100 + i));
-            sprite.addElemento(new Sprite(200 + i));
-            fanta.addElemento(new Fanta(300 + i));
-            snickers.addElemento(new Snickers(400 + i));
-            super8.addElemento(new Super8(500 + i));
+            coca.addElemento(new CocaCola(100 + totalCocaCreadas++));
+            sprite.addElemento(new Sprite(200 + totalSpriteCreadas++));
+            fanta.addElemento(new Fanta(300 + totalFantaCreadas++));
+            snickers.addElemento(new Snickers(400 + totalSnickersCreados++));
+            super8.addElemento(new Super8(500 + totalSuper8Creados++));
         }
     }
 
@@ -161,19 +166,19 @@ public class Expendedor {
     */
     public void rellenarDepositos() {
         while (coca.getCantidad() < capacidadMaximaPorDeposito) {
-            coca.addElemento(new CocaCola(100 + coca.getCantidad()));
+            coca.addElemento(new CocaCola(100 + totalCocaCreadas++));
         }
         while (sprite.getCantidad() < capacidadMaximaPorDeposito) {
-            sprite.addElemento(new Sprite(200 + sprite.getCantidad()));
+            sprite.addElemento(new Sprite(200 + totalSpriteCreadas++));
         }
         while (fanta.getCantidad() < capacidadMaximaPorDeposito) {
-            fanta.addElemento(new Fanta(300 + fanta.getCantidad()));
+            fanta.addElemento(new Fanta(300 + totalFantaCreadas++));
         }
         while (snickers.getCantidad() < capacidadMaximaPorDeposito) {
-            snickers.addElemento(new Snickers(400 + snickers.getCantidad()));
+            snickers.addElemento(new Snickers(400 + totalSnickersCreados++));
         }
         while (super8.getCantidad() < capacidadMaximaPorDeposito) {
-            super8.addElemento(new Super8(500 + super8.getCantidad()));
+            super8.addElemento(new Super8(500 + totalSuper8Creados++));
         }
     }
 
