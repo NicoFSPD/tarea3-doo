@@ -143,6 +143,7 @@ public class PanelComprador extends JPanel {
     /**
      * Remueve una moneda del monedero del comprador y la transfiere
      * al deposito de monedas en espera de la maquina expendedora.
+     * @param valor de la moneda a ingresar, pudiendo ser de 100, 500, 1000 o 1500.
      */
     private void ingresarMonedaAlExpendedor(int valor) {
         for (int i = 0; i < com.getMonedero().size(); i++) {
@@ -156,7 +157,8 @@ public class PanelComprador extends JPanel {
         System.out.println("No tienes monedas de $" + valor);
     }
 
-    /**Realiza el renderizado y dibujo de los componentes visuales del sector del comprador.
+    /**
+     * Realiza el renderizado y dibujo de los componentes visuales del sector del comprador.
      * @param g el objeto graphics utilizado para pintar en el componente.
      */
     @Override

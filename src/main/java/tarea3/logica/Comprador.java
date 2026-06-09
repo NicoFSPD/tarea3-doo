@@ -91,7 +91,7 @@ public class Comprador {
     /**
      * Getters necesarios para que el PanelComprador puedo dibujar los
      * objetos en la pantalla.
-     * @return
+     * @return arreglo con las monedas y productos del comprador y comprados respectivamente
      */
     public ArrayList<Moneda> getMonedero() { return this.monedero; }
     public ArrayList<Producto> getMochila() { return this.mochila; }

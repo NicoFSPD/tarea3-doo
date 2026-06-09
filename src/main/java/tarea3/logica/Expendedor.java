@@ -120,6 +120,8 @@ public class Expendedor {
 
     /**
      * Transfiere de forma secuencial todos los elementos de un deposito a otro.
+     * @param origen deposito de donde salen las monedas.
+     * @param destino deposito donde se guardan las monedas sacadas.
      */
     private void vaciarDepositoHacia(Deposito<Moneda> origen, Deposito<Moneda> destino) {
         while (origen.getCantidad() > 0) {
@@ -130,9 +132,16 @@ public class Expendedor {
             }
         }
     }
-
+    /**
+     * Agrega una moneda al contenedor de saldo en espera para la compra.
+     * @param m La moneda ingresada por el comprador.
+     */
     public void recibirMonedaEnEspera(Moneda m) { this.monedasEnEspera.addElemento(m); }
 
+    /**
+     * Calcula y retorna el monto acumulado por las monedas en espera.
+     * @return Suma de los valores de las monedas en el contenedor de1 espera.
+     */
     public int getSaldoEnEspera() {
         int total = 0;
         for (int i = 0; i < monedasEnEspera.getCantidad(); i++) {
@@ -185,18 +194,31 @@ public class Expendedor {
     /**
     * Getters para el gui
     */
-
+    /** @return Depósito que contiene el stock actual de Coca-Colas. */
     public Deposito<Producto> getDepositoCoca() { return this.coca; }
+    /** @return Depósito que contiene el stock actual de Sprites. */
     public Deposito<Producto> getDepositoSprite() { return this.sprite; }
+    /** @return Depósito que contiene el stock actual de Fantas. */
     public Deposito<Producto> getDepositoFanta() { return this.fanta; }
+    /** @return Depósito que contiene el stock actual de Snickers. */
     public Deposito<Producto> getDepositoSnickers() { return this.snickers; }
+    /** @return Depósito que contiene el stock actual de Super 8's. */
     public Deposito<Producto> getDepositoSuper8() { return this.super8; }
+
+    /** @return Cantidad total de monedas alacenadas en la caja fuerte. */
     public int getCantidadMonedasAlmacenadas() {
         return this.monedasAlmacenadas.getCantidad();
 }
+
+    /**
+     * Retorna una moneda específica de la caja fuerte interna según su índice.
+     * @param i Índice de la moneda a consultar.
+     * @return Objeto Moneda en la posición indicada.
+     */
     public Moneda getMonedaAlmacenadaPorIndice(int i) {
         return this.monedasAlmacenadas.getElementoPorIndice(i);
 }
+
     /**
     * Permite a la interfaz grafica espiar el compartimento de retiro
     * para saber que producto dibujar sin removerlo del deposito.

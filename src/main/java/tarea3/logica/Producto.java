@@ -12,14 +12,14 @@ public abstract class Producto{
 
     /**
      * Constructor de la clase producto.
-     * * @param numSerie será el ID del producto en cuestión.
+     * @param numSerie será el ID del producto en cuestión.
      */
     public Producto(int numSerie){
         this.serie = numSerie;
     }
     /**
      * Getter del ID del producto.
-     * * @return numSerie será el ID del producto en cuestión.
+     * @return numSerie será el ID del producto en cuestión.
      */
     public int getSerie(){
         return this.serie;
@@ -27,7 +27,7 @@ public abstract class Producto{
 
     /**
      * Metodo abstracto que "realiza la acción" de comer/beber el producto.
-     * * @return retorna un string con el sonido o el nombre del producto consumido.
+     * @return retorna un string con el sonido o el nombre del producto consumido.
      */
     public abstract String consumir();
 }

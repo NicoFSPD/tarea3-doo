@@ -48,3 +48,4 @@ public abstract class Moneda implements Comparable<Moneda> {
         return "Moneda de " + this.getValor() + " (Serie: " + this.hashCode() + ")";
     }
 }
+

@@ -178,6 +178,7 @@ public class PanelExpendedor extends JPanel {
         return super.getToolTipText(event);
     }
 
+
     /**
      * Realiza el renderizado y dibujo de los componentes visuales del expendedor.
      * Construye la carcasa, los estantes, los productos en stock, el deposito de retiro,

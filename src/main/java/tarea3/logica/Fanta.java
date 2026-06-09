@@ -1,12 +1,14 @@
 package tarea3.logica;
 
 /**
- * Objeto Fanta
+ * Objeto que representa un producto del tipo Fanta
+ * @author Nicolas Silva
+ * @version 1.0, 9 de junio de 2026
  */
 class Fanta extends Bebida {
     /**
      * constructor de la clase Fanta
-     * * @param numSerie será el ID de la Fanta comprada
+     * @param numSerie será el ID de la Fanta comprada
      */
     public Fanta(int numSerie) {
         super(numSerie);
@@ -14,7 +16,7 @@ class Fanta extends Bebida {
 
     /**
      * acción de consumir la Fanta
-     * * @return string "fanta"
+     * @return string "fanta"
      */
     @Override
     public String consumir() {
