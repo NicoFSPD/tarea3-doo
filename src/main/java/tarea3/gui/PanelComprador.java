@@ -4,9 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 import tarea3.logica.Comprador;
-import tarea3.logica.Expendedor;
 import tarea3.logica.Moneda;
 import tarea3.logica.Producto;
+import tarea3.logica.Opcion;
 
 /**
  * Clase que representa la vista y el controlador del comprador en la interfaz grafica.
@@ -19,8 +19,6 @@ import tarea3.logica.Producto;
 
 
 public class PanelComprador extends JPanel {
-
-    //ATRIBUTOS DEL PANEL
     private Comprador com;
     private PanelMochila panelMochila;
     private PanelMonedero panelMonedero;
@@ -28,9 +26,14 @@ public class PanelComprador extends JPanel {
     private int estadoBoton = -1;
 
 
-    /**Constructor del panel de comprador
-     * @param com : Necesita informacion del comprador para representarla
-     * @param parent : Comunicacion con el panel principal del cual depende*/
+    /**
+     * Constructor de la clase PanelComprador.
+     * Inicializa el modelo logico, configura el layout y construye los paneles internos
+     * para la seleccion de productos, acciones de pago, monedero y mochila.
+     * Asigna los escuchadores de eventos a los botones correspondientes.
+     * @param com El objeto Comprador que contiene la logica del cliente.
+     * @param parent El objeto PanelPrincipal que actua como contenedor superior para la comunicacion.
+     */
     public PanelComprador(Comprador com, PanelPrincipal parent) {
         this.com = com;
         this.panelPrincipal = parent;
@@ -38,64 +41,54 @@ public class PanelComprador extends JPanel {
         setLayout(null);
         setBackground(new Color(150,150,150));
 
-
-        //#################################################################
-        //          --- PANEL DE SELECCION DE PRODUCTOS ---
-        //#################################################################
-
         JPanel panelProductos = new JPanel(new FlowLayout());
         panelProductos.setBackground(new Color(0, 180, 180));
         panelProductos.setBounds(10, 10, 510, 120);
 
-        //BOTONES PARA LAS OPCIONES DE PRODUCTO
+
         JButton btncoca = new JButton("COCA-COLA (1200$)");
         JButton btnsprite = new JButton("SPRITE (1200$)");
         JButton btnfanta = new JButton("FANTA (1200$)");
         JButton btnsnick = new JButton("SNICKERS (800$)");
         JButton btnsu8 = new JButton("SUPER8 (700$)");
 
-        //COLORES CARACTERISTICOS PARA LOS BOTONES
         btncoca.setBackground(new Color(255,0,0));
         btnsprite.setBackground(new Color(0, 255, 11));
         btnfanta.setBackground(new Color(255, 128,0));
         btnsnick.setBackground(new Color(0, 0, 255));
         btnsu8.setBackground(new Color(0, 0, 0));
 
-        //Agregar los botones ya instanciados desde Swing
         panelProductos.add(btncoca);
         panelProductos.add(btnsprite);
         panelProductos.add(btnfanta);
         panelProductos.add(btnsnick);
         panelProductos.add(btnsu8);
 
-        //#################################################################
-        //                   --- PANEL PARA ACCIONAR ---
-        //#################################################################
-
         JPanel panelAcciones = new JPanel(new GridLayout(3, 2, 5, 5));
         panelAcciones.setBackground(new Color(0, 160, 160));
         panelAcciones.setBounds(10, 140, 510, 150);
 
-        //BOTONES PARA SELECCION DE MONEDA
         JButton btn100 = new JButton("100$");
         JButton btn500 = new JButton("500$");
         JButton btn1000 = new JButton("1000$");
         JButton btn1500 = new JButton("1500$");
 
-        //listeners
         btn100.addActionListener(e -> ingresarMonedaAlExpendedor(100));
         btn500.addActionListener(e -> ingresarMonedaAlExpendedor(500));
         btn1000.addActionListener(e -> ingresarMonedaAlExpendedor(1000));
         btn1500.addActionListener(e -> ingresarMonedaAlExpendedor(1500));
+        btncoca.addActionListener(e -> estadoBoton = Opcion.COCA.ID);
+        btnsprite.addActionListener(e -> estadoBoton = Opcion.SPRITE.ID);
+        btnfanta.addActionListener(e -> estadoBoton = Opcion.FANTA.ID);
+        btnsnick.addActionListener(e -> estadoBoton = Opcion.SNICKERS.ID);
+        btnsu8.addActionListener(e -> estadoBoton = Opcion.SUPER8.ID);
 
-        //BOTONES PARA ACCIONAR
         JButton btnPagar = new JButton("PAGAR");
         JButton btnVuelto = new JButton("RETIRAR VUELTO");
 
         btnPagar.setBackground(new Color(40, 230, 230));
         btnVuelto.setBackground(new Color(230, 40, 230));
 
-        //listeners
         btnPagar.addActionListener(e -> {
             if (estadoBoton == -1) {
                 System.out.println("Primero debes seleccionar un producto");
@@ -116,7 +109,6 @@ public class PanelComprador extends JPanel {
             actualizar();
         });
 
-        //Agregar los botones ya instanciados desde Swing
         panelAcciones.add(btn100);
         panelAcciones.add(btn500);
         panelAcciones.add(btn1000);
@@ -124,18 +116,12 @@ public class PanelComprador extends JPanel {
         panelAcciones.add(btnPagar);
         panelAcciones.add(btnVuelto);
 
-
-        //#################################################################
-        // --- PANELES DE MONEDERO Y PRODUCTOS ADQUIRIDOS (MOCHILA) ---
-        //#################################################################
-
         panelMonedero = new PanelMonedero(com);
         panelMonedero.setBounds(10, 300, 510, 190);
 
         panelMochila = new PanelMochila(com);
         panelMochila.setBounds(10, 500, 510, 210);
 
-        //BLOQUE FINAL DE AGREGADO DE TODOS LOS PANELES (DE COMPOSICION).
         add(panelProductos);
         add(panelAcciones);
         add(panelMonedero);
@@ -144,8 +130,8 @@ public class PanelComprador extends JPanel {
     }
 
     /**
-     * Refresca el renderizado de los paneles de representacion dinamica
-     * y propaga la actualizacion visual hacia el panel principal.
+     * Refresca el renderizado de los paneles de y transfiere la
+     * actualizacion visual hacia el panel principal.
      * Debe invocarse cada vez que el estado del comprador o del expendedor cambie.
      */
     public void actualizar(){
@@ -170,16 +156,7 @@ public class PanelComprador extends JPanel {
         System.out.println("No tienes monedas de $" + valor);
     }
 
-    /**Procesa y evalua los clicks del mouse realizados dentro de la region del comprador.
-     * Permite al comprador seleccionar productos, escoger monedas para el pago o retirar productos.
-     * @param x coordenada horizontal.
-     * @param y coordenada vertical.
-     */
-    public void manejarClick(int x, int y) {
-    }
-
     /**Realiza el renderizado y dibujo de los componentes visuales del sector del comprador.
-     * Dibuja el fondo cyan.
      * @param g el objeto graphics utilizado para pintar en el componente.
      */
     @Override
