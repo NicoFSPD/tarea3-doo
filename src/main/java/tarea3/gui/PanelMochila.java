@@ -31,7 +31,7 @@ public class PanelMochila extends JPanel {
      */
     public PanelMochila(Comprador com) {
         this.com = com;
-        setBackground(new Color(0, 130, 130));
+        setBackground(Color.WHITE);
         setToolTipText("");
         cargarImagenes();
     }

@@ -30,7 +30,7 @@ public class PanelMonedero extends JPanel {
      */
     public PanelMonedero(Comprador com) {
         this.com = com;
-        setBackground(new Color(0, 150, 150));
+        setBackground(Color.WHITE);
         setToolTipText("");
         cargarImagenes();
     }

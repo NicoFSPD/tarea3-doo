@@ -41,7 +41,7 @@ public class PanelComprador extends JPanel {
         setBackground(new Color(150,150,150));
 
         JPanel panelProductos = new JPanel(new FlowLayout());
-        panelProductos.setBackground(new Color(0, 180, 180));
+        panelProductos.setBackground(Color.WHITE);
         panelProductos.setBounds(10, 30, 510, 80);
 
 
@@ -70,8 +70,8 @@ public class PanelComprador extends JPanel {
         panelProductos.add(btnsu8);
 
         JPanel panelAcciones = new JPanel(new GridLayout(3, 2, 5, 5));
-        panelAcciones.setBackground(new Color(0, 160, 160));
-        panelAcciones.setBounds(10, 140, 510, 150);
+        panelAcciones.setBackground(Color.LIGHT_GRAY);
+        panelAcciones.setBounds(10, 130, 510, 150);
 
         JButton btn100 = new JButton("100$");
         JButton btn500 = new JButton("500$");
@@ -122,7 +122,7 @@ public class PanelComprador extends JPanel {
         panelAcciones.add(btnVuelto);
 
         panelMonedero = new PanelMonedero(com);
-        panelMonedero.setBounds(10, 300, 510, 190);
+        panelMonedero.setBounds(10, 300, 510, 180);
 
         panelMochila = new PanelMochila(com);
         panelMochila.setBounds(10, 500, 510, 210);
@@ -169,12 +169,12 @@ public class PanelComprador extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.setColor(Color.CYAN);
+        g.setColor(Color.LIGHT_GRAY);
         g.fillRect(0, 0, getWidth(), getHeight());
 
         g.setColor(Color.BLACK);
         g.drawString("PRODUCTOS", 10, 25);
-        g.drawString("FORMA DE PAGO Y RETIRO DE VUELTO", 10, 138);
+        g.drawString("FORMA DE PAGO Y RETIRO DE VUELTO", 10, 128);
         g.drawString("MONEDERO", 10, 298);
         g.drawString("MOCHILA", 10, 498);
     }
