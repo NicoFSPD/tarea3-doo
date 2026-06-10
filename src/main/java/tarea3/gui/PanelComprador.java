@@ -54,8 +54,14 @@ public class PanelComprador extends JPanel {
         btncoca.setBackground(new Color(255,0,0));
         btnsprite.setBackground(new Color(0, 255, 11));
         btnfanta.setBackground(new Color(255, 128,0));
-        btnsnick.setBackground(new Color(0, 0, 255));
+        btnsnick.setBackground(new Color(75, 31, 0));
         btnsu8.setBackground(new Color(0, 0, 0));
+
+        btncoca.setForeground(Color.WHITE);
+        btnsprite.setForeground(Color.WHITE);
+        btnfanta.setForeground(Color.WHITE);
+        btnsnick.setForeground(Color.RED);
+        btnsu8.setForeground(Color.YELLOW);
 
         panelProductos.add(btncoca);
         panelProductos.add(btnsprite);
