@@ -42,7 +42,7 @@ public class PanelComprador extends JPanel {
 
         JPanel panelProductos = new JPanel(new FlowLayout());
         panelProductos.setBackground(new Color(0, 180, 180));
-        panelProductos.setBounds(10, 10, 510, 120);
+        panelProductos.setBounds(10, 30, 510, 80);
 
 
         JButton btncoca = new JButton("COCA-COLA (1200$)");
@@ -167,7 +167,7 @@ public class PanelComprador extends JPanel {
         g.fillRect(0, 0, getWidth(), getHeight());
 
         g.setColor(Color.BLACK);
-        g.drawString("PRODUCTOS", 10, 8);
+        g.drawString("PRODUCTOS", 10, 25);
         g.drawString("FORMA DE PAGO Y RETIRO DE VUELTO", 10, 138);
         g.drawString("MONEDERO", 10, 298);
         g.drawString("MOCHILA", 10, 498);
